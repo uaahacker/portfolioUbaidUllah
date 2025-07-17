@@ -231,7 +231,7 @@
                         <i class="fas fa-tools text-white text-3xl"></i>
                     </div>
                     <h3 class="text-xl font-bold mb-2">No Skills Added</h3>
-                    <p class="text-gray-400">Skills will appear here once added through the admin panel.</p>
+                    <p class="text-slate-600 dark:text-gray-400">Skills will appear here once added through the admin panel.</p>
                 </div>
                 {% endfor %}
             </div>
@@ -245,7 +245,7 @@
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     <div class="p-8 lg:p-12 order-2 lg:order-1" data-aos="fade-right">
                         <h2 class="text-3xl md:text-4xl font-bold mb-6">About Me</h2>
-                        <div class="text-gray-300 space-y-4">
+                        <div class="text-slate-700 dark:text-gray-300 space-y-4">
                             {{ about_me.bio|linebreaks|default:"<p>Hello! I'm a passionate software engineer with experience building innovative digital products. I specialize in creating elegant solutions to complex problems using modern web technologies.</p>" }}
                         </div>
                         {% if about_me.resume_file %}
@@ -268,7 +268,7 @@
                                                     <i class="fas fa-user text-white text-3xl"></i>
                                                 </div>
                                                 <h3 class="text-xl font-bold">{{ about_me.name }}</h3>
-                                                <p class="text-gray-400">{{ about_me.title }}</p>
+                                                <p class="text-slate-600 dark:text-gray-400">{{ about_me.title }}</p>
                                             </div>
                                         </div>
                                     {% endif %}
@@ -288,7 +288,7 @@
     <section id="experience" class="py-20 px-4">
         <div class="max-w-7xl mx-auto">
             <h2 class="text-3xl md:text-4xl font-bold text-center mb-4" data-aos="fade-up">Professional Journey</h2>
-            <p class="text-gray-400 text-center max-w-2xl mx-auto mb-12" data-aos="fade-up">My career path and experiences</p>
+            <p class="text-slate-600 dark:text-gray-400 text-center max-w-2xl mx-auto mb-12" data-aos="fade-up">My career path and experiences</p>
             
             <div class="relative">
                 <!-- Timeline line -->
@@ -306,18 +306,18 @@
                                 {{ experience.start_date|date:"Y" }} - {% if experience.end_date %}{{ experience.end_date|date:"Y" }}{% else %}Present{% endif %}
                             </div>
                             <h3 class="text-xl font-bold mt-1">{{ experience.job_title }}</h3>
-                            <div class="text-gray-400">{{ experience.company }}</div>
+                            <div class="text-slate-600 dark:text-gray-400">{{ experience.company }}</div>
                             {% if experience.location %}
-                            <div class="text-sm text-gray-500">{{ experience.location }}</div>
+                            <div class="text-sm text-slate-500 dark:text-gray-500">{{ experience.location }}</div>
                             {% endif %}
                         </div>
                         <div class="{% if forloop.counter|divisibleby:2 %}lg:order-1 lg:pr-8{% else %}lg:order-2 lg:pl-8{% endif %} relative">
                             <div class="glass rounded-2xl p-6">
-                                <p class="text-gray-300 mb-4">{{ experience.description }}</p>
+                                <p class="text-slate-700 dark:text-gray-300 mb-4">{{ experience.description }}</p>
                                 {% if experience.achievements %}
                                 <div class="mb-4">
-                                    <h4 class="text-sm font-semibold text-gray-300 mb-2">Key Achievements:</h4>
-                                    <div class="text-sm text-gray-400 space-y-1">
+                                    <h4 class="text-sm font-semibold text-slate-700 dark:text-gray-300 mb-2">Key Achievements:</h4>
+                                    <div class="text-sm text-slate-600 dark:text-gray-400 space-y-1">
                                         {{ experience.achievements|linebreaks }}
                                     </div>
                                 </div>
@@ -341,32 +341,32 @@
     <section id="contact" class="py-20 px-4">
         <div class="max-w-4xl mx-auto">
             <h2 class="text-3xl md:text-4xl font-bold text-center mb-4" data-aos="fade-up">Get In Touch</h2>
-            <p class="text-gray-400 text-center max-w-2xl mx-auto mb-12" data-aos="fade-up">Have a project in mind? Let's work together!</p>
+            <p class="text-slate-600 dark:text-gray-400 text-center max-w-2xl mx-auto mb-12" data-aos="fade-up">Have a project in mind? Let's work together!</p>
             
             <div class="glass rounded-3xl p-8 md:p-12" data-aos="fade-up">
                 <form id="contact-form" method="post" action="{% url 'portfolio:contact_ajax' %}">
                     {% csrf_token %}
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <div>
-                            <label for="id_name" class="block text-gray-300 mb-2">Name *</label>
+                            <label for="id_name" class="block text-slate-700 dark:text-gray-300 mb-2">Name *</label>
                             {{ contact_form.name }}
                             <div class="form-error" id="name-error"></div>
                         </div>
                         <div>
-                            <label for="id_email" class="block text-gray-300 mb-2">Email *</label>
+                            <label for="id_email" class="block text-slate-700 dark:text-gray-300 mb-2">Email *</label>
                             {{ contact_form.email }}
                             <div class="form-error" id="email-error"></div>
                         </div>
                     </div>
                     
                     <div class="mb-6">
-                        <label for="id_subject" class="block text-gray-300 mb-2">Subject *</label>
+                        <label for="id_subject" class="block text-slate-700 dark:text-gray-300 mb-2">Subject *</label>
                         {{ contact_form.subject }}
                         <div class="form-error" id="subject-error"></div>
                     </div>
                     
                     <div class="mb-8">
-                        <label for="id_message" class="block text-gray-300 mb-2">Message *</label>
+                        <label for="id_message" class="block text-slate-700 dark:text-gray-300 mb-2">Message *</label>
                         {{ contact_form.message }}
                         <div class="form-error" id="message-error"></div>
                     </div>
