@@ -248,3 +248,55 @@ class SiteConfiguration(models.Model):
         if not self.pk and SiteConfiguration.objects.exists():
             raise ValueError('Only one SiteConfiguration instance is allowed')
         return super().save(*args, **kwargs)
+
+
+class Resource(models.Model):
+    CATEGORY_CHOICES = [
+        ('template', 'Templates'),
+        ('plugin', 'Plugins'),
+        ('file', 'Files'),
+        ('image', 'Images'),
+        ('document', 'Documents'),
+        ('code', 'Code Snippets'),
+        ('other', 'Other'),
+    ]
+
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
+    file = models.FileField(upload_to='resources/')
+    thumbnail = models.ImageField(upload_to='resources/thumbnails/', blank=True, null=True)
+    download_url = models.URLField(blank=True, null=True, help_text="External download link if file is hosted elsewhere")
+    file_size = models.CharField(max_length=20, blank=True, help_text="e.g., 2.5 MB")
+    file_type = models.CharField(max_length=10, blank=True, help_text="e.g., ZIP, PDF, PNG")
+    is_featured = models.BooleanField(default=False)
+    is_free = models.BooleanField(default=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    downloads_count = models.PositiveIntegerField(default=0)
+    tags = models.CharField(max_length=200, blank=True, help_text="Comma-separated tags")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "Resource"
+        verbose_name_plural = "Resources"
+
+    def __str__(self):
+        return f"{self.title} ({self.get_category_display()})"
+
+    def get_file_url(self):
+        if self.download_url:
+            return self.download_url
+        elif self.file:
+            return self.file.url
+        return None
+
+    def get_tags_list(self):
+        if self.tags:
+            return [tag.strip() for tag in self.tags.split(',')]
+        return []
+
+    def increment_downloads(self):
+        self.downloads_count += 1
+        self.save(update_fields=['downloads_count'])

@@ -62,6 +62,24 @@
         }
     </script>
     
+    <!-- Dark Mode Initialization (Prevent Flash) -->
+    <script>
+        // Initialize theme immediately to prevent flash - Default to LIGHT mode
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            // Only apply dark mode if explicitly saved as dark
+            if (savedTheme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                // Default to light mode and save it
+                document.documentElement.classList.remove('dark');
+                if (!savedTheme) {
+                    localStorage.setItem('theme', 'light');
+                }
+            }
+        })();
+    </script>
+    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -73,27 +91,70 @@
         
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0f172a, #1e293b);
-            color: #e2e8f0;
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0, #cbd5e1);
+            color: #1e293b;
             overflow-x: hidden;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+        
+        .dark body {
+            background: linear-gradient(135deg, #0f172a, #1e293b, #334155);
+            color: #e2e8f0;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(147, 51, 234, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+            transition: all 0.3s ease;
         }
         
         h1, h2, h3, h4, h5 {
             font-family: 'Space Grotesk', sans-serif;
+            color: #0f172a;
+            transition: color 0.3s ease;
+        }
+        
+        .dark h1, .dark h2, .dark h3, .dark h4, .dark h5 {
+            color: #f8fafc;
         }
         
         .glass {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            transition: all 0.3s ease;
+        }
+        
+        .dark .glass {
             background: rgba(30, 41, 59, 0.4);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
         }
         
         .glass-light {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 4px 16px rgba(31, 38, 135, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .dark .glass-light {
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
@@ -256,6 +317,72 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #8b5cf6;
         }
+        
+        /* Mobile-First Responsive Design */
+        @media (max-width: 640px) {
+            .glass {
+                margin: 0 1rem;
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+                line-height: 1.2;
+            }
+            
+            h2 {
+                font-size: 2rem;
+                line-height: 1.3;
+            }
+            
+            .project-card:hover,
+            .skill-card:hover {
+                transform: none;
+            }
+            
+            .text-5xl {
+                font-size: 2.5rem;
+            }
+            
+            .text-6xl {
+                font-size: 3rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .timeline-item::before {
+                left: 8px;
+            }
+            
+            .container {
+                padding: 0 1rem;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .project-card:hover,
+            .skill-card:hover {
+                transform: translateY(-5px);
+            }
+        }
+        
+        /* Touch devices */
+        @media (hover: none) and (pointer: coarse) {
+            .project-card:hover,
+            .skill-card:hover,
+            .tag:hover {
+                transform: none;
+                box-shadow: none;
+            }
+        }
+        
+        /* High DPI displays */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            .glass {
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+            }
+        }
     </style>
     
     {% block extra_head %}{% endblock %}
@@ -271,7 +398,7 @@
     </script>
     {% endif %}
 </head>
-<body class="dark:bg-gray-900" data-aos-easing="ease-out-quart" data-aos-duration="800">
+<body class="bg-slate-50 dark:bg-gray-900 text-slate-900 dark:text-slate-100 transition-all duration-300" data-aos-easing="ease-out-quart" data-aos-duration="800">
     <!-- Particles Background -->
     <div id="particles"></div>
     
@@ -322,26 +449,6 @@
             once: true,
             easing: 'ease-out-quart'
         });
-        
-        // Theme toggle
-        const themeToggle = document.getElementById('theme-toggle');
-        const html = document.documentElement;
-        
-        // Check for saved theme preference
-        if (localStorage.getItem('theme') === 'dark') {
-            html.classList.add('dark');
-        } else if (localStorage.getItem('theme') === 'light') {
-            html.classList.remove('dark');
-        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            html.classList.add('dark');
-        }
-        
-        if (themeToggle) {
-            themeToggle.addEventListener('click', () => {
-                html.classList.toggle('dark');
-                localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
-            });
-        }
         
         // Create particles
         function createParticles() {
@@ -414,6 +521,60 @@
                 mobileMenu.classList.toggle('hidden');
             });
         }
+        
+        // Dark mode toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+        
+        // Initialize theme on page load - Default to LIGHT mode
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                html.classList.add('dark');
+            } else {
+                // Default to light mode
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+        
+        // Initialize theme immediately
+        initTheme();
+        
+        // Set up the theme toggle
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                const isDark = html.classList.contains('dark');
+                if (isDark) {
+                    html.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    html.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                }
+                
+                // Update theme toggle icons
+                const moonIcon = document.getElementById('theme-icon-moon');
+                const sunIcon = document.getElementById('theme-icon-sun');
+                if (moonIcon && sunIcon) {
+                    if (html.classList.contains('dark')) {
+                        moonIcon.classList.add('hidden');
+                        sunIcon.classList.remove('hidden');
+                    } else {
+                        moonIcon.classList.remove('hidden');
+                        sunIcon.classList.add('hidden');
+                    }
+                }
+            });
+        }
+        
+        // Mobile menu close on link click
+        const mobileMenuLinks = mobileMenu?.querySelectorAll('a');
+        mobileMenuLinks?.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
     </script>
     
     {% block extra_js %}{% endblock %}

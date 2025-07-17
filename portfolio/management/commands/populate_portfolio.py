@@ -16,7 +16,7 @@ class Command(BaseCommand):
         # Create or update AboutMe
         about_me, created = AboutMe.objects.get_or_create(
             defaults={
-                'name': 'Ubaid Ahmed',
+                'name': 'Ubaid Ullah',
                 'title': 'Full Stack Developer',
                 'bio': '''Hello! I'm Ubaid, a passionate software engineer with over 5 years of experience building innovative digital products. I specialize in creating elegant solutions to complex problems using modern web technologies.
 
@@ -40,10 +40,10 @@ When I'm not coding, you can find me exploring new technologies, contributing to
         # Create or update SiteConfiguration
         site_config, created = SiteConfiguration.objects.get_or_create(
             defaults={
-                'site_title': 'Ubaid Ahmed | Portfolio',
+                'site_title': 'Ubaid Ullah | Portfolio',
                 'site_tagline': 'Building the future, one line of code at a time',
-                'meta_description': 'Professional portfolio of Ubaid Ahmed - Full Stack Developer specializing in modern web technologies',
-                'meta_keywords': 'Ubaid Ahmed, software engineer, web developer, full stack, portfolio, Django, React, Python',
+                'meta_description': 'Professional portfolio of Ubaid Ullah - Full Stack Developer specializing in modern web technologies',
+                'meta_keywords': 'Ubaid Ullah, software engineer, web developer, full stack, portfolio, Django, React, Python',
                 'allow_contact_form': True,
                 'maintenance_mode': False,
             }

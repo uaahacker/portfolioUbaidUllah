@@ -4,7 +4,8 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 from .models import (
     AboutMe, Skill, Project, Technology, ProjectTechnology,
-    Experience, ExperienceTechnology, ContactMessage, SiteConfiguration
+    Experience, ExperienceTechnology, ContactMessage, SiteConfiguration,
+    Resource
 )
 
 
@@ -179,6 +180,34 @@ class SiteConfigurationAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
         # Prevent deletion
         return False
+
+
+@admin.register(Resource)
+class ResourceAdmin(admin.ModelAdmin):
+    list_display = ['title', 'category', 'file_type', 'file_size', 'downloads_count', 'is_featured', 'is_free', 'created_at']
+    list_filter = ['category', 'is_featured', 'is_free', 'created_at']
+    search_fields = ['title', 'description', 'tags']
+    readonly_fields = ['downloads_count', 'created_at', 'updated_at']
+    date_hierarchy = 'created_at'
+    
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('title', 'description', 'category', 'tags')
+        }),
+        ('Files & Links', {
+            'fields': ('file', 'thumbnail', 'download_url', 'file_size', 'file_type')
+        }),
+        ('Settings', {
+            'fields': ('is_featured', 'is_free', 'price')
+        }),
+        ('Statistics', {
+            'fields': ('downloads_count', 'created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+    
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related()
 
 
 # Customize the admin site

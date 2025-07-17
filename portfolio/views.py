@@ -7,7 +7,7 @@ from django.utils.decorators import method_decorator
 from django.core.paginator import Paginator
 from django.db.models import Q
 from .models import (
-    AboutMe, Skill, Project, Experience, ContactMessage, SiteConfiguration
+    AboutMe, Skill, Project, Experience, ContactMessage, SiteConfiguration, Resource
 )
 from .forms import ContactForm
 import json
@@ -218,3 +218,69 @@ class AboutView(TemplateView):
         })
         
         return context
+
+
+class ResourcesView(TemplateView):
+    template_name = 'portfolio/resources.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        from .models import Resource
+        
+        # Get filter parameters
+        category_filter = self.request.GET.get('category', 'all')
+        search_query = self.request.GET.get('search', '')
+        
+        # Base queryset
+        resources = Resource.objects.all()
+        
+        # Apply category filter
+        if category_filter != 'all':
+            resources = resources.filter(category=category_filter)
+        
+        # Apply search filter
+        if search_query:
+            resources = resources.filter(
+                Q(title__icontains=search_query) |
+                Q(description__icontains=search_query) |
+                Q(tags__icontains=search_query)
+            )
+        
+        # Pagination
+        paginator = Paginator(resources, 12)  # 12 resources per page
+        page_number = self.request.GET.get('page')
+        resources_page = paginator.get_page(page_number)
+        
+        # Get categories for filter
+        categories = Resource.CATEGORY_CHOICES
+        featured_resources = Resource.objects.filter(is_featured=True)[:6]
+        
+        context.update({
+            'resources': resources_page,
+            'categories': categories,
+            'featured_resources': featured_resources,
+            'current_category': category_filter,
+            'search_query': search_query,
+        })
+        
+        return context
+
+
+class ResourceDownloadView(TemplateView):
+    def get(self, request, pk):
+        from .models import Resource
+        from django.http import HttpResponse, Http404
+        
+        try:
+            resource = get_object_or_404(Resource, pk=pk)
+            resource.increment_downloads()
+            
+            if resource.download_url:
+                return redirect(resource.download_url)
+            elif resource.file:
+                return redirect(resource.file.url)
+            else:
+                raise Http404("File not found")
+                
+        except Resource.DoesNotExist:
+            raise Http404("Resource not found")
