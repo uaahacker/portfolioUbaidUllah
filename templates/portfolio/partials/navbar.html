@@ -1,0 +1,63 @@
+{% load static %}
+<!-- Navbar -->
+<nav class="fixed w-full py-4 px-6 z-50 transition-all duration-300" id="navbar">
+    <div class="max-w-7xl mx-auto glass rounded-2xl px-6 py-3 flex justify-between items-center">
+        <a href="{% url 'portfolio:home' %}" class="text-2xl font-bold flex items-center">
+            <span class="bg-gradient-to-r from-purple-500 to-indigo-500 text-transparent bg-clip-text">
+                {{ global_about_me.name|default:"Portfolio"|truncatewords:1 }}
+            </span>
+            {% if global_about_me.name %}
+            <span class="text-white">{{ global_about_me.name|wordcount|add:"-1"|slice:"1:" }}</span>
+            {% endif %}
+        </a>
+        
+        <div class="hidden md:flex space-x-8">
+            <a href="{% url 'portfolio:home' %}#hero" class="text-gray-300 hover:text-white transition">Home</a>
+            <a href="{% url 'portfolio:home' %}#projects" class="text-gray-300 hover:text-white transition">Projects</a>
+            <a href="{% url 'portfolio:home' %}#skills" class="text-gray-300 hover:text-white transition">Skills</a>
+            <a href="{% url 'portfolio:home' %}#about" class="text-gray-300 hover:text-white transition">About</a>
+            {% if experiences %}
+            <a href="{% url 'portfolio:home' %}#experience" class="text-gray-300 hover:text-white transition">Experience</a>
+            {% endif %}
+            <a href="{% url 'portfolio:home' %}#contact" class="text-gray-300 hover:text-white transition">Contact</a>
+        </div>
+        
+        <div class="flex items-center space-x-4">
+            <button id="theme-toggle" class="p-2 rounded-full glass-light hover:bg-gray-700 transition" title="Toggle theme">
+                <i class="fas fa-moon text-yellow-300 dark:hidden"></i>
+                <i class="fas fa-sun text-yellow-400 hidden dark:block"></i>
+            </button>
+            
+            <button id="mobile-menu-btn" class="md:hidden text-white p-2">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            
+            {% if global_about_me.resume_file %}
+            <a href="{{ global_about_me.resume_file.url }}" target="_blank" class="hidden md:block px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg font-medium hover:from-purple-700 hover:to-indigo-700 transition">
+                <i class="fas fa-download mr-2"></i>Resume
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden mt-4">
+        <div class="glass rounded-2xl p-4 mx-6">
+            <div class="flex flex-col space-y-3">
+                <a href="{% url 'portfolio:home' %}#hero" class="text-gray-300 hover:text-white transition py-2">Home</a>
+                <a href="{% url 'portfolio:home' %}#projects" class="text-gray-300 hover:text-white transition py-2">Projects</a>
+                <a href="{% url 'portfolio:home' %}#skills" class="text-gray-300 hover:text-white transition py-2">Skills</a>
+                <a href="{% url 'portfolio:home' %}#about" class="text-gray-300 hover:text-white transition py-2">About</a>
+                {% if experiences %}
+                <a href="{% url 'portfolio:home' %}#experience" class="text-gray-300 hover:text-white transition py-2">Experience</a>
+                {% endif %}
+                <a href="{% url 'portfolio:home' %}#contact" class="text-gray-300 hover:text-white transition py-2">Contact</a>
+                {% if global_about_me.resume_file %}
+                <a href="{{ global_about_me.resume_file.url }}" target="_blank" class="px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg font-medium hover:from-purple-700 hover:to-indigo-700 transition text-center">
+                    <i class="fas fa-download mr-2"></i>Resume
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>

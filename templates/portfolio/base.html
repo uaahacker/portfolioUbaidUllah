@@ -1,0 +1,373 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ global_about_me.name|default:"Portfolio" }} | {{ global_about_me.title|default:"Software Engineer" }}{% endblock %}</title>
+    
+    <!-- Meta Tags -->
+    <meta name="description" content="{% block meta_description %}{{ site_config.meta_description|default:'Professional portfolio website showcasing my skills and projects' }}{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}{{ site_config.meta_keywords|default:'software engineer, web developer, portfolio' }}{% endblock %}">
+    <meta name="author" content="{{ global_about_me.name|default:'Portfolio Owner' }}">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="{% block og_title %}{{ global_about_me.name|default:'Portfolio' }} | {{ global_about_me.title|default:'Software Engineer' }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{{ site_config.meta_description|default:'Professional portfolio website' }}{% endblock %}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS (Animate On Scroll) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 8s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5 {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        .glass {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+        
+        .glass-light {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .gradient-border {
+            position: relative;
+            border-radius: 1rem;
+        }
+        
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            background: linear-gradient(45deg, #6366f1, #8b5cf6, #ec4899);
+            border-radius: 1rem;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 2px;
+            background: linear-gradient(to bottom, #6366f1, #8b5cf6);
+        }
+        
+        .skill-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.2), 0 10px 10px -5px rgba(99, 102, 241, 0.1);
+        }
+        
+        .project-card {
+            transition: all 0.3s ease;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.25);
+        }
+        
+        .tag {
+            transition: all 0.2s ease;
+        }
+        
+        .tag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(99, 102, 241, 0.2);
+        }
+        
+        .dark .glass {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        
+        .dark .glass-light {
+            background: rgba(30, 41, 59, 0.4);
+        }
+        
+        /* Loading animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        /* Form styles */
+        .form-error {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        
+        .form-success {
+            color: #10b981;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        
+        /* Smooth scrolling for anchor links */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #6366f1;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #8b5cf6;
+        }
+    </style>
+    
+    {% block extra_head %}{% endblock %}
+    
+    <!-- Google Analytics -->
+    {% if site_config.google_analytics_id %}
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ site_config.google_analytics_id }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '{{ site_config.google_analytics_id }}');
+    </script>
+    {% endif %}
+</head>
+<body class="dark:bg-gray-900" data-aos-easing="ease-out-quart" data-aos-duration="800">
+    <!-- Particles Background -->
+    <div id="particles"></div>
+    
+    <!-- Navigation -->
+    {% include 'portfolio/partials/navbar.html' %}
+    
+    <!-- Messages -->
+    {% if messages %}
+        <div id="messages" class="fixed top-20 right-4 z-50 space-y-2">
+            {% for message in messages %}
+                <div class="glass rounded-lg p-4 max-w-sm animate-pulse-slow message-alert" data-level="{{ message.level_tag }}">
+                    <div class="flex items-center">
+                        {% if message.level_tag == 'success' %}
+                            <i class="fas fa-check-circle text-green-400 mr-2"></i>
+                        {% elif message.level_tag == 'error' %}
+                            <i class="fas fa-exclamation-circle text-red-400 mr-2"></i>
+                        {% elif message.level_tag == 'warning' %}
+                            <i class="fas fa-exclamation-triangle text-yellow-400 mr-2"></i>
+                        {% else %}
+                            <i class="fas fa-info-circle text-blue-400 mr-2"></i>
+                        {% endif %}
+                        <span class="text-sm">{{ message }}</span>
+                        <button onclick="this.parentElement.parentElement.style.display='none'" class="ml-auto text-gray-400 hover:text-white">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    
+    <!-- Footer -->
+    {% include 'portfolio/partials/footer.html' %}
+    
+    <!-- JavaScript Libraries -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            once: true,
+            easing: 'ease-out-quart'
+        });
+        
+        // Theme toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+        
+        // Check for saved theme preference
+        if (localStorage.getItem('theme') === 'dark') {
+            html.classList.add('dark');
+        } else if (localStorage.getItem('theme') === 'light') {
+            html.classList.remove('dark');
+        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            html.classList.add('dark');
+        }
+        
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                html.classList.toggle('dark');
+                localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+            });
+        }
+        
+        // Create particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            if (!container) return;
+            
+            const particleCount = window.innerWidth > 768 ? 30 : 15;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random size
+                const size = Math.random() * 60 + 10;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                
+                // Random color
+                const colors = ['rgba(99, 102, 241, 0.2)', 'rgba(139, 92, 246, 0.2)', 'rgba(124, 58, 237, 0.2)'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.background = color;
+                
+                // Animation
+                particle.style.animation = `float ${Math.random() * 10 + 10}s ease-in-out infinite`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        // Initialize particles
+        document.addEventListener('DOMContentLoaded', createParticles);
+        
+        // Auto-hide messages after 5 seconds
+        setTimeout(() => {
+            const messages = document.querySelectorAll('.message-alert');
+            messages.forEach(message => {
+                message.style.transition = 'opacity 0.3s ease';
+                message.style.opacity = '0';
+                setTimeout(() => message.remove(), 300);
+            });
+        }, 5000);
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

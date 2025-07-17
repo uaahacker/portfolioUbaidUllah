@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alex Morgan | Software Engineer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5 {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        .glass {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+        
+        .glass-light {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .gradient-border {
+            position: relative;
+            border-radius: 1rem;
+        }
+        
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            background: linear-gradient(45deg, #6366f1, #8b5cf6, #ec4899);
+            border-radius: 1rem;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 2px;
+            background: linear-gradient(to bottom, #6366f1, #8b5cf6);
+        }
+        
+        .skill-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.2), 0 10px 10px -5px rgba(99, 102, 241, 0.1);
+        }
+        
+        .project-card {
+            transition: all 0.3s ease;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.25);
+        }
+        
+        .tag {
+            transition: all 0.2s ease;
+        }
+        
+        .tag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(99, 102, 241, 0.2);
+        }
+        
+        .dark .glass {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        
+        .dark .glass-light {
+            background: rgba(30, 41, 59, 0.4);
+        }
+    </style>
+</head>
+<body class="dark:bg-gray-900">
+    <!-- Particles Background -->
+    <div id="particles"></div>
+    
+    <!-- Navbar -->
+    <nav class="fixed w-full py-4 px-6 z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto glass rounded-2xl px-6 py-3 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold flex items-center">
+                <span class="bg-gradient-to-r from-purple-500 to-indigo-500 text-transparent bg-clip-text">Alex</span>
+                <span class="text-white">Morgan</span>
+            </a>
+            
+            <div class="hidden md:flex space-x-8">
+                <a href="#hero" class="text-gray-300 hover:text-white transition">Home</a>
+                <a href="#projects" class="text-gray-300 hover:text-white transition">Projects</a>
+                <a href="#skills" class="text-gray-300 hover:text-white transition">Skills</a>
+                <a href="#about" class="text-gray-300 hover:text-white transition">About</a>
+                <a href="#experience" class="text-gray-300 hover:text-white transition">Experience</a>
+                <a href="#contact" class="text-gray-300 hover:text-white transition">Contact</a>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <button id="theme-toggle" class="p-2 rounded-full glass-light hover:bg-gray-700 transition">
+                    <i class="fas fa-moon text-yellow-300 dark:hidden"></i>
+                    <i class="fas fa-sun text-yellow-400 hidden dark:block"></i>
+                </button>
+                
+                <button class="md:hidden text-white">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                
+                <a href="#" class="hidden md:block px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg font-medium hover:from-purple-700 hover:to-indigo-700 transition">Resume</a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section id="hero" class="min-h-screen flex items-center pt-16 pb-20 px-4">
+        <div class="max-w-7xl mx-auto w-full">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="text-center lg:text-left" data-aos="fade-right">
+                    <h1 class="text-5xl md:text-6xl font-bold mb-6">
+                        <span class="block">Building The</span>
+                        <span class="block bg-gradient-to-r from-purple-400 to-indigo-400 text-transparent bg-clip-text">Digital Future</span>
+                    </h1>
+                    <p class="text-xl text-gray-300 mb-8 max-w-lg mx-auto lg:mx-0">
+                        Software Engineer specializing in creating elegant, efficient solutions for complex problems. Passionate about web technologies and innovative design.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <a href="#projects" class="px-8 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg font-medium text-lg hover:from-purple-700 hover:to-indigo-700 transition transform hover:-translate-y-1">View Projects</a>
+                        <a href="#contact" class="px-8 py-3 glass rounded-lg font-medium text-lg border border-indigo-500 hover:bg-indigo-900/30 transition">Get In Touch</a>
+                    </div>
+                </div>
+                
+                <div class="relative" data-aos="fade-left">
+                    <div class="glass rounded-3xl p-8 max-w-md mx-auto">
+                        <div class="gradient-border rounded-2xl">
+                            <div class="bg-gray-800 rounded-2xl p-1">
+                                <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl overflow-hidden">
+                                    <div class="p-4">
+                                        <div class="flex justify-between items-center mb-4">
+                                            <div class="flex space-x-2">
+                                                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                            </div>
+                                            <div class="text-sm text-gray-400">portfolio.js</div>
+                                        </div>
+                                        <div class="font-mono text-sm">
+                                            <div class="text-purple-400">class <span class="text-indigo-300">SoftwareEngineer</span> {</div>
+                                            <div class="ml-4 text-blue-400">constructor() {</div>
+                                            <div class="ml-8 text-green-400">this.name = <span class="text-yellow-300">"Alex Morgan"</span>;</div>
+                                            <div class="ml-8 text-green-400">this.title = <span class="text-yellow-300">"Full Stack Developer"</span>;</div>
+                                            <div class="ml-8 text-green-400">this.skills = [<span class="text-yellow-300">"React", "Node.js", "Python"</span>];</div>
+                                            <div class="ml-4 text-blue-400">}</div>
+                                            <div class="ml-4 text-blue-400">build() {</div>
+                                            <div class="ml-8 text-green-400">return <span class="text-yellow-300">"Innovative digital experiences"</span>;</div>
+                                            <div class="ml-4 text-blue-400">}</div>
+                                            <div class="text-purple-400">}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-purple-500/20 blur-xl"></div>
+                    <div class="absolute -bottom-6 -left-6 w-32 h-32 rounded-full bg-indigo-500/20 blur-xl"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Current Project -->
+    <section id="current-project" class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4" data-aos="fade-up">Current Project</h2>
+            <p class="text-gray-400 text-center max-w-2xl mx-auto mb-12" data-aos="fade-up">What I'm working on right now</p>
+            
+            <div class="glass rounded-3xl overflow-hidden" data-aos="fade-up">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="p-8">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center">
+                                <i class="fas fa-code text-white"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold ml-4">Nexus Framework</h3>
+                        </div>
+                        <p class="text-gray-300 mb-6">
+                            A modern full-stack framework for building scalable web applications with React, Node.js, and GraphQL. Designed to accelerate development while maintaining best practices.
+                        </p>
+                        <div class="mb-8">
+                            <h4 class="text-lg font-semibold mb-3">Tech Stack</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="tag px-3 py-1 bg-indigo-900/30 rounded-full text-sm">React 18</span>
+                                <span class="tag px-3 py-1 bg-indigo-900/30 rounded-full text-sm">Node.js</span>
+                                <span class="tag px-3 py-1 bg-indigo-900/30 rounded-full text-sm">GraphQL</span>
+                                <span class="tag px-3 py-1 bg-indigo-900/30 rounded-full text-sm">TypeScript</span>
+                                <span class="tag px-3 py-1 bg-indigo-900/30 rounded-full text-sm">MongoDB</span>
+                                <span class="tag px-3 py-1 bg-indigo-900/30 rounded-full text-sm">Docker</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-4">
+                            <a href="#" class="px-5 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg font-medium hover:from-purple-700 hover:to-indigo-700 transition flex items-center">
+                                <i class="fas fa-external-link-alt mr-2"></i> Live Preview
+                            </a>
+                            <a href="#" class="px-5 py-2.5 glass rounded-lg font-medium border border-indigo-500 hover:bg-indigo-900/30 transition flex items-center">
+                                <i class="fab fa-github mr-2"></i> GitHub
+                            </a>
+                        </div>
+                    </div>
+                    <div class="relative hidden lg:block">
+                        <div class="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-indigo-500/10"></div>
+                        <div class="h-full w-full bg-gray-800 flex items-center justify-center">
+                            <div class="text-center p-8">
+                                <div class="inline-block animate-pulse-slow">
+                                    <div class="w-32 h-32 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center mb-6 mx-auto">
+                                        <i class="fas fa-cube text-white text-5xl"></i>
+                                    </div>
+                                </div>
+                                <h3 class="text-2xl font-bold mb-2">Nexus Framework</h3>
+                                <p class="text-gray-400">Modern Full-Stack Solution</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Portfolio Gallery -->
+    <section id="projects" class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4" data-aos="fade-up">Project Portfolio</h2>
+            <p class="text-gray-400 text-center max-w-2xl mx-auto mb-12" data-aos="fade-up">Explore my recent work and creations</p>
+            
+            <!-- Project Filter Tags -->
+            <div class="flex flex-wrap justify-center gap-3 mb-12" data-aos="fade-up">
+                <button class="tag px-4 py-2 glass rounded-lg font-medium hover:bg-indigo-900/30 transition">All Projects</button>
+                <button class="tag px-4 py-2 glass rounded-lg font-medium hover:bg-indigo-900/30 transition">Web Apps</button>
+                <button class="tag px-4 py-2 glass rounded-lg font-medium hover:bg-indigo-900/30 transition">Mobile</button>
+                <button class="tag px-4 py-2 glass rounded-lg font-medium hover:bg-indigo-900/30 transition">UI/UX</button>
+                <button class="tag px-4 py-2 glass rounded-lg font-medium hover:bg-indigo-900/30 transition">Open Source</button>
+            </div>
+            
+            <!-- Project Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div class="project-card glass rounded-2xl overflow-hidden" data-aos="fade-up">
+                    <div class="h-48 bg-gradient-to-br from-purple-600/20 to-indigo-600/20 flex items-center justify-center">
+                        <div class="text-center">
+                            <div class="w-16 h-16 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-chart-network text-white text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold">DataViz Dashboard</h3>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-300 mb-4">Interactive data visualization platform for business analytics with real-time updates.</p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="px-2 py-1 bg-indigo-900/30 rounded text-xs">React</span>
+                            <span class="px-2 py-1 bg-indigo-900/30 rounded text-xs">D3.js</span>
+                            <span class="px-2 py-1 bg-indigo-900/30 rounded text-xs">Firebase</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <a href="#" class="text-indigo-400 hover:text-indigo-300 transition flex items-center">
+                                <i class="fas fa-external-link-alt mr-1"></i> Live
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-white transition flex items-center">
+                                <i class="fab fa-github mr-1"></i> Code
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 2 -->
+                <div class="project-card glass rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="100">
+                    <div class="h-48 bg-gradient-to-br from-teal-600/20 to-cyan-600/20 flex items-center justify-center">
+                        <div class="text-center">
+                            <div class="w-16 h-16 rounded-full bg-gradient-to-r from-teal-600 to-cyan-600 flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-mobile-alt text-white text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold">EcoTrack Mobile</h3>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-300 mb-4">Sustainability app that helps users track and reduce their carbon footprint.</p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="px-2 py-1 bg-teal-900/30 rounded text-xs">React Native</span>
+                            <span class="px-2 py-1 bg-teal-900/30 rounded text-xs">Node.js</span>
+                            <span class="px-2 py-1 bg-teal-900/30 rounded text-xs">MongoDB</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <a href="#" class="text-cyan-400 hover:text-cyan-300 transition flex items-center">
+                                <i class="fas fa-external-link-alt mr-1"></i> Live
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-white transition flex items-center">
+                                <i class="fab fa-github mr-1"></i> Code
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 3 -->
+                <div class="project-card glass rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="200">
+                    <div class="h-48 bg-gradient-to-br from-pink-600/20 to-rose-600/20 flex items-center justify-center">
+                        <div class="text-center">
+                            <div class="w-16 h-16 rounded-full bg-gradient-to-r from-pink-600 to-rose-600 flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-shopping-cart text-white text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold">Artisan Market</h3>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-300 mb-4">E-commerce platform for independent artists and craftspeople to sell their creations.</p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="px-2 py-1 bg-rose-900/30 rounded text-xs">Vue.js</span>
+                            <span class="px-2 py-1 bg-rose-900/30 rounded text-xs">Laravel</span>
+                            <span class="px-2 py-1 bg-rose-900/30 rounded text-xs">Stripe API</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <a href="#" class="text-rose-400 hover:text-rose-300 transition flex items-center">
+                                <i class="fas fa-external-link-alt mr-1"></i> Live
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-white transition flex items-center">
+                                <i class="fab fa-github mr-1"></i> Code
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4" data-aos="fade-up">Technical Skills</h2>
+            <p class="text-gray-400 text-center max-w-2xl mx-auto mb-12" data-aos="fade-up">Technologies and tools I work with</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Frontend Card -->
+                <div class="skill-card glass rounded-2xl p-6 transition" data-aos="fade-up">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center mb-6">
+                        <i class="fas fa-paint-brush text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Frontend</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1.5 glass-light rounded-lg text-sm">React</span>
+                        <span class="px-3 py-1.5 glass-light rounded-lg text-sm">Vue.js</span>
+                        <span class="px-3 py-1.5 glass-light rounded-lg text-sm">JavaScript</span>
+                        <span class="px-3 py-1.5 glass-light rounded-lg text-sm">TypeScript</span>
+                        <span class="px-3 py-1.5 glass-light rounded-lg text-sm">Tailwind CSS</span>
+                        <span class="px-3 py-1.5 glass-light rounded-lg text-sm">SASS</span>
+                    </div>
+                </div>
+                
+                <!-- Backend Card -->
+                <div class="skill-card glass rounded-2xl p-6 transition" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-teal-600 to-cyan-600 flex items-center justify-center mb-6">
+                        <i class="fas fa-server text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Backend</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1.5 glass-light rounded-lg text-sm">Node.js</span>
+                        <span class="px-3 py-1.5 glass-light rounded-lg text-sm">Express</span>
+                        <span class="px-3 py-1.5 glass-light rounded-lg text-sm">Python</span>
+                        <span class="px-3 py-1.5 glass-light rounded-lg text-sm">Django</span>
+                        <span class="px-3 py-1.5 glass-light rounded-lg text-sm">GraphQL</span>
+                        <span class="px-3 py-1.5 glass-light rounded-lg text-sm">REST API</span>
+                    </div>
+                </div>
+                
+                <!-- DevOps Card -->
+                <div class="skill-card glass rounded-2xl p-6 transition" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-600 to-orange-600 flex items-center justify-center mb-6">
+                        <i class="fas fa-cloud text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">DevOps</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1.5 glass-light rounded-lg text-sm">Docker</span>
+                        <span class="px-3 py-1.5 glass-light rounded-lg text-sm">Kubernetes</span>
+                        <span class="px-3 py-1.5 glass-light rounded-lg text-sm">AWS</span>
+                        <span class="px-3 py-1.5 glass-light rounded-lg text-sm">CI/CD</span>
+                        <span class="px-3 py-1.5 glass-light rounded-lg text-sm">GitHub Actions</span>
+                        <span class="px-3 py-1.5 glass-light rounded-lg text-sm">Terraform</span>
+                    </div>
+                </div>
+                
+                <!-- Database Card -->
+                <div class="skill-card glass rounded-2xl p-6 transition" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-emerald-600 to-green-600 flex items-center justify-center mb-6">
+                        <i class="fas fa-database text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Database</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1.5 glass-light rounded-lg text-sm">MongoDB</span>
+                        <span class="px-3 py-1.5 glass-light rounded-lg text-sm">PostgreSQL</span>
+                        <span class="px-3 py-1.5 glass-light rounded-lg text-sm">Redis</span>
+                        <span class="px-3 py-1.5 glass-light rounded-lg text-sm">Firebase</span>
+                        <span class="px-3 py-1.5 glass-light rounded-lg text-sm">SQL</span>
+                        <span class="px-3 py-1.5 glass-light rounded-lg text-sm">Elasticsearch</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Me -->
+    <section id="about" class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="glass rounded-3xl overflow-hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="p-8 lg:p-12 order-2 lg:order-1" data-aos="fade-right">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-6">About Me</h2>
+                        <p class="text-gray-300 mb-6">
+                            Hello! I'm Alex, a passionate software engineer with over 5 years of experience building innovative digital products. I specialize in creating elegant solutions to complex problems using modern web technologies.
+                        </p>
+                        <p class="text-gray-300 mb-6">
+                            My journey in tech started when I built my first website at 15. Since then, I've worked with startups and established companies to deliver high-quality software solutions that drive business value.
+                        </p>
+                        <p class="text-gray-300 mb-8">
+                            When I'm not coding, you can find me hiking in the mountains, reading sci-fi novels, or contributing to open-source projects. I believe in continuous learning and staying at the forefront of technology trends.
+                        </p>
+                        <a href="#contact" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg font-medium hover:from-purple-700 hover:to-indigo-700 transition inline-flex items-center">
+                            <i class="fas fa-paper-plane mr-2"></i> Contact Me
+                        </a>
+                    </div>
+                    
+                    <div class="relative order-1 lg:order-2" data-aos="fade-left">
+                        <div class="gradient-border rounded-2xl mx-8 lg:mx-0">
+                            <div class="bg-gray-800 rounded-2xl overflow-hidden">
+                                <div class="bg-gradient-to-b from-gray-800 to-gray-900 p-1">
+                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" alt="Alex Morgan" class="w-full h-auto rounded-xl">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-purple-500/20 blur-xl"></div>
+                        <div class="absolute -bottom-6 -left-6 w-32 h-32 rounded-full bg-indigo-500/20 blur-xl"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Experience Timeline -->
+    <section id="experience" class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4" data-aos="fade-up">Professional Journey</h2>
+            <p class="text-gray-400 text-center max-w-2xl mx-auto mb-12" data-aos="fade-up">My career path and experiences</p>
+            
+            <div class="relative">
+                <!-- Timeline line -->
+                <div class="absolute left-0 lg:left-1/2 top-0 h-full w-1 bg-gradient-to-b from-purple-500 to-indigo-500 transform lg:-translate-x-1/2"></div>
+                
+                <!-- Timeline items -->
+                <div class="space-y-12">
+                    <!-- Item 1 -->
+                    <div class="relative pl-8 lg:pl-0 lg:grid grid-cols-2" data-aos="fade-right">
+                        <div class="lg:pr-12 lg:text-right mb-4 lg:mb-0">
+                            <div class="text-sm text-indigo-400 font-medium">2021 - Present</div>
+                            <h3 class="text-xl font-bold mt-1">Senior Full Stack Developer</h3>
+                            <div class="text-gray-400">TechNova Solutions</div>
+                        </div>
+                        <div class="lg:pl-12 relative">
+                            <div class="glass rounded-2xl p-6">
+                                <p class="text-gray-300 mb-4">
+                                    Leading development of enterprise SaaS products using React, Node.js, and microservices architecture. Implemented CI/CD pipelines reducing deployment time by 40%.
+                                </p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-indigo-900/30 rounded-full text-sm">React</span>
+                                    <span class="px-3 py-1 bg-indigo-900/30 rounded-full text-sm">Node.js</span>
+                                    <span class="px-3 py-1 bg-indigo-900/30 rounded-full text-sm">AWS</span>
+                                    <span class="px-3 py-1 bg-indigo-900/30 rounded-full text-sm">Docker</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Item 2 -->
+                    <div class="relative pl-8 lg:pl-0 lg:grid grid-cols-2" data-aos="fade-left">
+                        <div class="lg:pr-12 lg:text-right mb-4 lg:mb-0 order-1">
+                            <div class="text-sm text-indigo-400 font-medium">2019 - 2021</div>
+                            <h3 class="text-xl font-bold mt-1">Frontend Engineer</h3>
+                            <div class="text-gray-400">InnovateX</div>
+                        </div>
+                        <div class="lg:pl-12 relative order-2">
+                            <div class="glass rounded-2xl p-6">
+                                <p class="text-gray-300 mb-4">
+                                    Developed responsive user interfaces for financial applications. Collaborated with UX designers to implement design systems and component libraries.
+                                </p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-indigo-900/30 rounded-full text-sm">Vue.js</span>
+                                    <span class="px-3 py-1 bg-indigo-900/30 rounded-full text-sm">TypeScript</span>
+                                    <span class="px-3 py-1 bg-indigo-900/30 rounded-full text-sm">SASS</span>
+                                    <span class="px-3 py-1 bg-indigo-900/30 rounded-full text-sm">Jest</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Item 3 -->
+                    <div class="relative pl-8 lg:pl-0 lg:grid grid-cols-2" data-aos="fade-right">
+                        <div class="lg:pr-12 lg:text-right mb-4 lg:mb-0">
+                            <div class="text-sm text-indigo-400 font-medium">2017 - 2019</div>
+                            <h3 class="text-xl font-bold mt-1">Junior Developer</h3>
+                            <div class="text-gray-400">DigitalCraft Studios</div>
+                        </div>
+                        <div class="lg:pl-12 relative">
+                            <div class="glass rounded-2xl p-6">
+                                <p class="text-gray-300 mb-4">
+                                    Built and maintained client websites and web applications. Contributed to backend development using PHP and MySQL.
+                                </p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-indigo-900/30 rounded-full text-sm">JavaScript</span>
+                                    <span class="px-3 py-1 bg-indigo-900/30 rounded-full text-sm">PHP</span>
+                                    <span class="px-3 py-1 bg-indigo-900/30 rounded-full text-sm">WordPress</span>
+                                    <span class="px-3 py-1 bg-indigo-900/30 rounded-full text-sm">MySQL</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Form -->
+    <section id="contact" class="py-20 px-4">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4" data-aos="fade-up">Get In Touch</h2>
+            <p class="text-gray-400 text-center max-w-2xl mx-auto mb-12" data-aos="fade-up">Have a project in mind? Let's work together!</p>
+            
+            <div class="glass rounded-3xl p-8 md:p-12" data-aos="fade-up">
+                <form>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label for="name" class="block text-gray-300 mb-2">Name</label>
+                            <input type="text" id="name" class="w-full glass-light rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" placeholder="Your name">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-gray-300 mb-2">Email</label>
+                            <input type="email" id="email" class="w-full glass-light rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" placeholder="your.email@example.com">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label for="subject" class="block text-gray-300 mb-2">Subject</label>
+                        <input type="text" id="subject" class="w-full glass-light rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" placeholder="What's this about?">
+                    </div>
+                    
+                    <div class="mb-8">
+                        <label for="message" class="block text-gray-300 mb-2">Message</label>
+                        <textarea id="message" rows="5" class="w-full glass-light rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" placeholder="Tell me about your project..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="w-full md:w-auto px-8 py-3.5 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg font-medium hover:from-purple-700 hover:to-indigo-700 transition flex items-center justify-center">
+                        <i class="fas fa-paper-plane mr-2"></i> Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-12 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <a href="#" class="text-2xl font-bold flex items-center">
+                        <span class="bg-gradient-to-r from-purple-500 to-indigo-500 text-transparent bg-clip-text">Alex</span>
+                        <span class="text-white">Morgan</span>
+                    </a>
+                    <p class="text-gray-400 mt-2">Building the future, one line of code at a time</p>
+                </div>
+                
+                <div class="flex space-x-6 mb-6 md:mb-0">
+                    <a href="#" class="text-gray-400 hover:text-indigo-400 transition">
+                        <i class="fab fa-github text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-indigo-400 transition">
+                        <i class="fab fa-linkedin-in text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-indigo-400 transition">
+                        <i class="fab fa-twitter text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-indigo-400 transition">
+                        <i class="fab fa-dev text-xl"></i>
+                    </a>
+                </div>
+                
+                <div>
+                    <a href="#" class="px-5 py-2.5 glass rounded-lg font-medium hover:bg-indigo-900/30 transition flex items-center">
+                        <i class="fas fa-download mr-2"></i> Download Resume
+                    </a>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+                <p class="text-gray-500">© 2023 Alex Morgan. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            once: true,
+            easing: 'ease-out-quart'
+        });
+        
+        // Theme toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+        
+        // Check for saved theme preference
+        if (localStorage.getItem('theme') === 'dark') {
+            html.classList.add('dark');
+        } else if (localStorage.getItem('theme') === 'light') {
+            html.classList.remove('dark');
+        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            html.classList.add('dark');
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+        });
+        
+        // Create particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random size
+                const size = Math.random() * 60 + 10;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                
+                // Random color
+                const colors = ['rgba(99, 102, 241, 0.2)', 'rgba(139, 92, 246, 0.2)', 'rgba(124, 58, 237, 0.2)'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.background = color;
+                
+                // Animation
+                particle.style.animation = `float ${Math.random() * 10 + 10}s ease-in-out infinite`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        // Initialize particles
+        createParticles();
+    </script>
+</body>
+</html>

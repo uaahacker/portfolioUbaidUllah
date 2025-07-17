@@ -1,0 +1,447 @@
+{% extends 'portfolio/base.html' %}
+{% load static %}
+
+{% block title %}{{ global_about_me.name|default:"Portfolio" }} | {{ global_about_me.title|default:"Software Engineer" }}{% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section id="hero" class="min-h-screen flex items-center pt-16 pb-20 px-4">
+        <div class="max-w-7xl mx-auto w-full">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="text-center lg:text-left" data-aos="fade-right">
+                    <h1 class="text-5xl md:text-6xl font-bold mb-6">
+                        <span class="block">Building The</span>
+                        <span class="block bg-gradient-to-r from-purple-400 to-indigo-400 text-transparent bg-clip-text">Digital Future</span>
+                    </h1>
+                    <p class="text-xl text-gray-300 mb-8 max-w-lg mx-auto lg:mx-0">
+                        {{ about_me.bio|default:"Software Engineer specializing in creating elegant, efficient solutions for complex problems. Passionate about web technologies and innovative design." }}
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <a href="#projects" class="px-8 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg font-medium text-lg hover:from-purple-700 hover:to-indigo-700 transition transform hover:-translate-y-1">View Projects</a>
+                        <a href="#contact" class="px-8 py-3 glass rounded-lg font-medium text-lg border border-indigo-500 hover:bg-indigo-900/30 transition">Get In Touch</a>
+                    </div>
+                </div>
+                
+                <div class="relative" data-aos="fade-left">
+                    <div class="glass rounded-3xl p-8 max-w-md mx-auto">
+                        <div class="gradient-border rounded-2xl">
+                            <div class="bg-gray-800 rounded-2xl p-1">
+                                <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl overflow-hidden">
+                                    <div class="p-4">
+                                        <div class="flex justify-between items-center mb-4">
+                                            <div class="flex space-x-2">
+                                                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                            </div>
+                                            <div class="text-sm text-gray-400">portfolio.js</div>
+                                        </div>
+                                        <div class="font-mono text-sm">
+                                            <div class="text-purple-400">class <span class="text-indigo-300">SoftwareEngineer</span> {</div>
+                                            <div class="ml-4 text-blue-400">constructor() {</div>
+                                            <div class="ml-8 text-green-400">this.name = <span class="text-yellow-300">"{{ about_me.name|default:'Alex Morgan' }}"</span>;</div>
+                                            <div class="ml-8 text-green-400">this.title = <span class="text-yellow-300">"{{ about_me.title|default:'Full Stack Developer' }}"</span>;</div>
+                                            <div class="ml-8 text-green-400">this.experience = <span class="text-yellow-300">{{ about_me.years_experience|default:5 }}</span>;</div>
+                                            <div class="ml-4 text-blue-400">}</div>
+                                            <div class="ml-4 text-blue-400">build() {</div>
+                                            <div class="ml-8 text-green-400">return <span class="text-yellow-300">"Innovative digital experiences"</span>;</div>
+                                            <div class="ml-4 text-blue-400">}</div>
+                                            <div class="text-purple-400">}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-purple-500/20 blur-xl"></div>
+                    <div class="absolute -bottom-6 -left-6 w-32 h-32 rounded-full bg-indigo-500/20 blur-xl"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Current Project -->
+    {% if featured_project %}
+    <section id="current-project" class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4" data-aos="fade-up">Current Project</h2>
+            <p class="text-gray-400 text-center max-w-2xl mx-auto mb-12" data-aos="fade-up">What I'm working on right now</p>
+            
+            <div class="glass rounded-3xl overflow-hidden" data-aos="fade-up">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="p-8">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center">
+                                <i class="fas fa-code text-white"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold ml-4">{{ featured_project.title }}</h3>
+                        </div>
+                        <p class="text-gray-300 mb-6">
+                            {{ featured_project.description }}
+                        </p>
+                        <div class="mb-8">
+                            <h4 class="text-lg font-semibold mb-3">Tech Stack</h4>
+                            <div class="flex flex-wrap gap-2">
+                                {% for tech in featured_project.stack_list %}
+                                <span class="tag px-3 py-1 bg-indigo-900/30 rounded-full text-sm">{{ tech.technology.name }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-4">
+                            {% if featured_project.live_url %}
+                            <a href="{{ featured_project.live_url }}" target="_blank" class="px-5 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg font-medium hover:from-purple-700 hover:to-indigo-700 transition flex items-center">
+                                <i class="fas fa-external-link-alt mr-2"></i> Live Preview
+                            </a>
+                            {% endif %}
+                            {% if featured_project.github_url %}
+                            <a href="{{ featured_project.github_url }}" target="_blank" class="px-5 py-2.5 glass rounded-lg font-medium border border-indigo-500 hover:bg-indigo-900/30 transition flex items-center">
+                                <i class="fab fa-github mr-2"></i> GitHub
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="relative hidden lg:block">
+                        <div class="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-indigo-500/10"></div>
+                        <div class="h-full w-full bg-gray-800 flex items-center justify-center">
+                            {% if featured_project.thumbnail %}
+                                <img src="{{ featured_project.thumbnail.url }}" alt="{{ featured_project.title }}" class="w-full h-full object-cover">
+                            {% else %}
+                                <div class="text-center p-8">
+                                    <div class="inline-block animate-pulse-slow">
+                                        <div class="w-32 h-32 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center mb-6 mx-auto">
+                                            <i class="fas fa-cube text-white text-5xl"></i>
+                                        </div>
+                                    </div>
+                                    <h3 class="text-2xl font-bold mb-2">{{ featured_project.title }}</h3>
+                                    <p class="text-gray-400">{{ featured_project.get_status_display }}</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+    
+    <!-- Portfolio Gallery -->
+    <section id="projects" class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4" data-aos="fade-up">Project Portfolio</h2>
+            <p class="text-gray-400 text-center max-w-2xl mx-auto mb-12" data-aos="fade-up">Explore my recent work and creations</p>
+            
+            <!-- Project Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for project in projects %}
+                <div class="project-card glass rounded-2xl overflow-hidden" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+                    <div class="h-48 bg-gradient-to-br from-purple-600/20 to-indigo-600/20 flex items-center justify-center">
+                        {% if project.thumbnail %}
+                            <img src="{{ project.thumbnail.url }}" alt="{{ project.title }}" class="w-full h-full object-cover">
+                        {% else %}
+                            <div class="text-center">
+                                <div class="w-16 h-16 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center mx-auto mb-4">
+                                    <i class="fas fa-code text-white text-2xl"></i>
+                                </div>
+                                <h3 class="text-xl font-bold">{{ project.title }}</h3>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">{{ project.title }}</h3>
+                        <p class="text-gray-300 mb-4">{{ project.description|truncatewords:15 }}</p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            {% for tech in project.stack_list|slice:":3" %}
+                            <span class="px-2 py-1 bg-indigo-900/30 rounded text-xs">{{ tech.technology.name }}</span>
+                            {% endfor %}
+                            {% if project.stack_list.count > 3 %}
+                            <span class="px-2 py-1 bg-indigo-900/30 rounded text-xs">+{{ project.stack_list.count|add:"-3" }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="flex justify-between">
+                            {% if project.live_url %}
+                            <a href="{{ project.live_url }}" target="_blank" class="text-indigo-400 hover:text-indigo-300 transition flex items-center">
+                                <i class="fas fa-external-link-alt mr-1"></i> Live
+                            </a>
+                            {% endif %}
+                            {% if project.github_url %}
+                            <a href="{{ project.github_url }}" target="_blank" class="text-gray-400 hover:text-white transition flex items-center">
+                                <i class="fab fa-github mr-1"></i> Code
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-span-full text-center py-12">
+                    <div class="w-24 h-24 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-code text-white text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">No Projects Yet</h3>
+                    <p class="text-gray-400">Projects will appear here once added through the admin panel.</p>
+                </div>
+                {% endfor %}
+            </div>
+            
+            {% if projects %}
+            <div class="text-center mt-12">
+                <a href="{% url 'portfolio:projects' %}" class="px-8 py-3 glass rounded-lg font-medium border border-indigo-500 hover:bg-indigo-900/30 transition">
+                    View All Projects
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+    
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4" data-aos="fade-up">Technical Skills</h2>
+            <p class="text-gray-400 text-center max-w-2xl mx-auto mb-12" data-aos="fade-up">Technologies and tools I work with</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {% for category, skills in skills_by_category.items %}
+                <div class="skill-card glass rounded-2xl p-6 transition" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center mb-6">
+                        {% if category == 'frontend' %}
+                            <i class="fas fa-paint-brush text-white text-2xl"></i>
+                        {% elif category == 'backend' %}
+                            <i class="fas fa-server text-white text-2xl"></i>
+                        {% elif category == 'devops' %}
+                            <i class="fas fa-cloud text-white text-2xl"></i>
+                        {% elif category == 'database' %}
+                            <i class="fas fa-database text-white text-2xl"></i>
+                        {% elif category == 'mobile' %}
+                            <i class="fas fa-mobile-alt text-white text-2xl"></i>
+                        {% elif category == 'design' %}
+                            <i class="fas fa-palette text-white text-2xl"></i>
+                        {% else %}
+                            <i class="fas fa-code text-white text-2xl"></i>
+                        {% endif %}
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">{{ category|title }}</h3>
+                    <div class="flex flex-wrap gap-2">
+                        {% for skill in skills %}
+                        <span class="px-3 py-1.5 glass-light rounded-lg text-sm">{{ skill.name }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-span-full text-center py-12">
+                    <div class="w-24 h-24 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-tools text-white text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">No Skills Added</h3>
+                    <p class="text-gray-400">Skills will appear here once added through the admin panel.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Me -->
+    <section id="about" class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="glass rounded-3xl overflow-hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="p-8 lg:p-12 order-2 lg:order-1" data-aos="fade-right">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-6">About Me</h2>
+                        <div class="text-gray-300 space-y-4">
+                            {{ about_me.bio|linebreaks|default:"<p>Hello! I'm a passionate software engineer with experience building innovative digital products. I specialize in creating elegant solutions to complex problems using modern web technologies.</p>" }}
+                        </div>
+                        {% if about_me.resume_file %}
+                        <a href="{{ about_me.resume_file.url }}" target="_blank" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg font-medium hover:from-purple-700 hover:to-indigo-700 transition mt-8">
+                            <i class="fas fa-download mr-2"></i> Download Resume
+                        </a>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="relative order-1 lg:order-2" data-aos="fade-left">
+                        <div class="gradient-border rounded-2xl mx-8 lg:mx-0">
+                            <div class="bg-gray-800 rounded-2xl overflow-hidden">
+                                <div class="bg-gradient-to-b from-gray-800 to-gray-900 p-1">
+                                    {% if about_me.profile_image %}
+                                        <img src="{{ about_me.profile_image.url }}" alt="{{ about_me.name }}" class="w-full h-auto rounded-xl">
+                                    {% else %}
+                                        <div class="w-full h-96 bg-gradient-to-br from-purple-600/20 to-indigo-600/20 rounded-xl flex items-center justify-center">
+                                            <div class="text-center">
+                                                <div class="w-24 h-24 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center mx-auto mb-4">
+                                                    <i class="fas fa-user text-white text-3xl"></i>
+                                                </div>
+                                                <h3 class="text-xl font-bold">{{ about_me.name }}</h3>
+                                                <p class="text-gray-400">{{ about_me.title }}</p>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-purple-500/20 blur-xl"></div>
+                        <div class="absolute -bottom-6 -left-6 w-32 h-32 rounded-full bg-indigo-500/20 blur-xl"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Experience Timeline -->
+    {% if experiences %}
+    <section id="experience" class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4" data-aos="fade-up">Professional Journey</h2>
+            <p class="text-gray-400 text-center max-w-2xl mx-auto mb-12" data-aos="fade-up">My career path and experiences</p>
+            
+            <div class="relative">
+                <!-- Timeline line -->
+                <div class="absolute left-0 lg:left-1/2 top-0 h-full w-1 bg-gradient-to-b from-purple-500 to-indigo-500 transform lg:-translate-x-1/2"></div>
+                
+                <!-- Timeline items -->
+                <div class="space-y-12">
+                    {% for experience in experiences %}
+                    <div class="relative pl-8 lg:pl-0 lg:grid grid-cols-2 {% if forloop.counter|divisibleby:2 %}lg:text-right{% endif %}" data-aos="{% if forloop.counter|divisibleby:2 %}fade-left{% else %}fade-right{% endif %}">
+                        <div class="{% if forloop.counter|divisibleby:2 %}lg:pr-12 lg:text-right order-1{% else %}lg:pr-12 lg:text-right{% endif %} mb-4 lg:mb-0">
+                            <div class="text-sm text-indigo-400 font-medium">
+                                {{ experience.start_date|date:"Y" }} - {% if experience.end_date %}{{ experience.end_date|date:"Y" }}{% else %}Present{% endif %}
+                            </div>
+                            <h3 class="text-xl font-bold mt-1">{{ experience.job_title }}</h3>
+                            <div class="text-gray-400">{{ experience.company }}</div>
+                            {% if experience.location %}
+                            <div class="text-sm text-gray-500">{{ experience.location }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="{% if forloop.counter|divisibleby:2 %}lg:pl-12 order-2{% else %}lg:pl-12{% endif %} relative">
+                            <div class="glass rounded-2xl p-6">
+                                <p class="text-gray-300 mb-4">{{ experience.description }}</p>
+                                {% if experience.achievements %}
+                                <div class="mb-4">
+                                    <h4 class="text-sm font-semibold text-gray-300 mb-2">Key Achievements:</h4>
+                                    <ul class="text-sm text-gray-400 space-y-1">
+                                        {% for achievement in experience.achievements|linebreaks %}
+                                        {% if achievement.strip %}
+                                        <li>• {{ achievement|striptags }}</li>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                {% endif %}
+                                <div class="flex flex-wrap gap-2">
+                                    {% for tool in experience.tools_list %}
+                                    <span class="px-3 py-1 bg-indigo-900/30 rounded-full text-sm">{{ tool.technology.name }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+    
+    <!-- Contact Form -->
+    <section id="contact" class="py-20 px-4">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4" data-aos="fade-up">Get In Touch</h2>
+            <p class="text-gray-400 text-center max-w-2xl mx-auto mb-12" data-aos="fade-up">Have a project in mind? Let's work together!</p>
+            
+            <div class="glass rounded-3xl p-8 md:p-12" data-aos="fade-up">
+                <form id="contact-form" method="post" action="{% url 'portfolio:contact_ajax' %}">
+                    {% csrf_token %}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label for="id_name" class="block text-gray-300 mb-2">Name *</label>
+                            {{ contact_form.name }}
+                            <div class="form-error" id="name-error"></div>
+                        </div>
+                        <div>
+                            <label for="id_email" class="block text-gray-300 mb-2">Email *</label>
+                            {{ contact_form.email }}
+                            <div class="form-error" id="email-error"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label for="id_subject" class="block text-gray-300 mb-2">Subject *</label>
+                        {{ contact_form.subject }}
+                        <div class="form-error" id="subject-error"></div>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <label for="id_message" class="block text-gray-300 mb-2">Message *</label>
+                        {{ contact_form.message }}
+                        <div class="form-error" id="message-error"></div>
+                    </div>
+                    
+                    <button type="submit" class="w-full md:w-auto px-8 py-3.5 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg font-medium hover:from-purple-700 hover:to-indigo-700 transition flex items-center justify-center" id="submit-btn">
+                        <i class="fas fa-paper-plane mr-2"></i> 
+                        <span id="btn-text">Send Message</span>
+                        <div class="loading hidden ml-2"></div>
+                    </button>
+                    
+                    <div id="form-message" class="mt-4"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Enhanced contact form with AJAX
+document.getElementById('contact-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const form = this;
+    const submitBtn = document.getElementById('submit-btn');
+    const btnText = document.getElementById('btn-text');
+    const loading = submitBtn.querySelector('.loading');
+    const messageDiv = document.getElementById('form-message');
+    
+    // Clear previous errors
+    document.querySelectorAll('.form-error').forEach(el => el.textContent = '');
+    messageDiv.innerHTML = '';
+    
+    // Show loading state
+    submitBtn.disabled = true;
+    btnText.textContent = 'Sending...';
+    loading.classList.remove('hidden');
+    
+    try {
+        const formData = new FormData(form);
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            messageDiv.innerHTML = '<div class="form-success"><i class="fas fa-check-circle mr-2"></i>' + data.message + '</div>';
+            form.reset();
+        } else {
+            messageDiv.innerHTML = '<div class="form-error"><i class="fas fa-exclamation-circle mr-2"></i>' + data.message + '</div>';
+            
+            // Show field errors
+            if (data.errors) {
+                Object.keys(data.errors).forEach(field => {
+                    const errorDiv = document.getElementById(field + '-error');
+                    if (errorDiv) {
+                        errorDiv.textContent = data.errors[field][0];
+                    }
+                });
+            }
+        }
+    } catch (error) {
+        messageDiv.innerHTML = '<div class="form-error"><i class="fas fa-exclamation-circle mr-2"></i>An error occurred. Please try again.</div>';
+    } finally {
+        // Reset button state
+        submitBtn.disabled = false;
+        btnText.textContent = 'Send Message';
+        loading.classList.add('hidden');
+    }
+});
+</script>
+{% endblock %}
