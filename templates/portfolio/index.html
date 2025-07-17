@@ -297,8 +297,11 @@
                 <!-- Timeline items -->
                 <div class="space-y-12">
                     {% for experience in experiences %}
-                    <div class="relative pl-8 lg:pl-0 lg:grid grid-cols-2 {% if forloop.counter|divisibleby:2 %}lg:text-right{% endif %}" data-aos="{% if forloop.counter|divisibleby:2 %}fade-left{% else %}fade-right{% endif %}">
-                        <div class="{% if forloop.counter|divisibleby:2 %}lg:pr-12 lg:text-right order-1{% else %}lg:pr-12 lg:text-right{% endif %} mb-4 lg:mb-0">
+                    <div class="relative pl-8 lg:pl-0 lg:grid grid-cols-2 gap-8 {% if forloop.counter|divisibleby:2 %}lg:text-right{% endif %}" data-aos="{% if forloop.counter|divisibleby:2 %}fade-left{% else %}fade-right{% endif %}">
+                        <!-- Timeline dot -->
+                        <div class="absolute left-2 lg:left-1/2 top-0 w-4 h-4 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full transform lg:-translate-x-1/2 lg:-translate-y-1/2 border-4 border-gray-900"></div>
+                        
+                        <div class="{% if forloop.counter|divisibleby:2 %}lg:order-2 lg:pl-8{% else %}lg:order-1 lg:pr-8{% endif %} mb-4 lg:mb-0">
                             <div class="text-sm text-indigo-400 font-medium">
                                 {{ experience.start_date|date:"Y" }} - {% if experience.end_date %}{{ experience.end_date|date:"Y" }}{% else %}Present{% endif %}
                             </div>
@@ -308,19 +311,15 @@
                             <div class="text-sm text-gray-500">{{ experience.location }}</div>
                             {% endif %}
                         </div>
-                        <div class="{% if forloop.counter|divisibleby:2 %}lg:pl-12 order-2{% else %}lg:pl-12{% endif %} relative">
+                        <div class="{% if forloop.counter|divisibleby:2 %}lg:order-1 lg:pr-8{% else %}lg:order-2 lg:pl-8{% endif %} relative">
                             <div class="glass rounded-2xl p-6">
                                 <p class="text-gray-300 mb-4">{{ experience.description }}</p>
                                 {% if experience.achievements %}
                                 <div class="mb-4">
                                     <h4 class="text-sm font-semibold text-gray-300 mb-2">Key Achievements:</h4>
-                                    <ul class="text-sm text-gray-400 space-y-1">
-                                        {% for achievement in experience.achievements|linebreaks %}
-                                        {% if achievement.strip %}
-                                        <li>• {{ achievement|striptags }}</li>
-                                        {% endif %}
-                                        {% endfor %}
-                                    </ul>
+                                    <div class="text-sm text-gray-400 space-y-1">
+                                        {{ experience.achievements|linebreaks }}
+                                    </div>
                                 </div>
                                 {% endif %}
                                 <div class="flex flex-wrap gap-2">

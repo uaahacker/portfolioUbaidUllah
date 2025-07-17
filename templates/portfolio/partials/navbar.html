@@ -4,11 +4,8 @@
     <div class="max-w-7xl mx-auto glass rounded-2xl px-6 py-3 flex justify-between items-center">
         <a href="{% url 'portfolio:home' %}" class="text-2xl font-bold flex items-center">
             <span class="bg-gradient-to-r from-purple-500 to-indigo-500 text-transparent bg-clip-text">
-                {{ global_about_me.name|default:"Portfolio"|truncatewords:1 }}
+                {{ global_about_me.name|default:"Portfolio" }}
             </span>
-            {% if global_about_me.name %}
-            <span class="text-white">{{ global_about_me.name|wordcount|add:"-1"|slice:"1:" }}</span>
-            {% endif %}
         </a>
         
         <div class="hidden md:flex space-x-8">
