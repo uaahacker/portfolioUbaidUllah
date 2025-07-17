@@ -409,3 +409,8 @@ crontab -e
 - [ ] All features tested
 
 Your Django portfolio should now be live and accessible! 🎉
+
+use discord webhook for conatact us
+setup site stats google
+update the whole site to ubaid data
+setup backup of all the data into postgress and project to gdrive
