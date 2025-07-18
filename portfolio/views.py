@@ -11,7 +11,9 @@ from .models import (
 )
 from .forms import ContactForm
 import json
+import requests
 
+DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1395763227127971982/N1wubnNh5KZrjlx6NqBYRc6j8TG8sbSEvRDMH8zzQH4ReCVRpt5cgYIQMQ2O0Lm4nOX4'  # Replace with your actual Discord webhook URL contact us form
 
 class HomeView(TemplateView):
     template_name = 'portfolio/index.html'
@@ -122,6 +124,22 @@ class ContactAjaxView(ContactView):
         contact_message.ip_address = self.get_client_ip()
         contact_message.user_agent = self.request.META.get('HTTP_USER_AGENT', '')
         contact_message.save()
+        
+        discord_data = {
+        "content": f"📨 New Contact Message!\n\n"
+                   f"**Name:** {contact_message.name}\n"
+                   f"**Email:** {contact_message.email}\n"
+                   f"**Message:** {contact_message.message}\n"
+                   f"**IP:** {contact_message.ip_address}\n"
+                   f"**User Agent:** {contact_message.user_agent}"
+        }
+
+        try:
+            response = requests.post(DISCORD_WEBHOOK_URL, json=discord_data)
+            response.raise_for_status()
+        except requests.exceptions.RequestException as e:
+            # Optional: log error
+            print(f"Error sending to Discord: {e}")
         
         return JsonResponse({
             'success': True,
