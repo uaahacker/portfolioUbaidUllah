@@ -91,6 +91,7 @@ class Project(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
     detailed_description = models.TextField(blank=True, help_text="Longer description for project detail page")
+    features = models.TextField(blank=True, help_text="One feature per line")
     thumbnail = models.ImageField(upload_to='projects/', blank=True, null=True)
     github_url = models.URLField(blank=True, null=True)
     live_url = models.URLField(blank=True, null=True)
@@ -117,6 +118,22 @@ class Project(models.Model):
     @property
     def stack_list(self):
         return self.technologies.all()
+    
+    @property
+    def featured(self):
+        return self.is_featured
+    
+    @property
+    def features_list(self):
+        """Parse features from detailed description or return default features"""
+        if hasattr(self, '_features') and self._features:
+            return [f.strip() for f in self._features.split('\n') if f.strip()]
+        return [
+            "Responsive Design",
+            "Modern UI/UX",
+            "Cross-browser Compatible",
+            "Optimized Performance"
+        ]
 
 
 class Technology(models.Model):
